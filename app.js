@@ -18,8 +18,10 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
+const posts = [];
+
 app.get('/', (req, res) => {
-	res.render('home', { homeContent: homeStartingContent });
+	res.render('home', { homeContent: homeStartingContent, posts: posts });
 });
 
 app.get('/about', (req, res) => {
@@ -29,7 +31,23 @@ app.get('/about', (req, res) => {
 app.get('/contact', (req, res) => {
 	res.render('contact', { contactContent: contactContent });
 });
-app.send;
+
+app.get('/compose', (req, res) => {
+	res.render('compose');
+});
+
+app.post('/compose', (req, res) => {
+	const post = {
+		title: req.body.titleBox,
+		content: req.body.postBox,
+	};
+	posts.push(post);
+	res.redirect('/');
+});
+
+app.get('/post/:day', (req, res) => {
+	console.log(req.params.day);
+});
 
 app.listen(3000, function () {
 	console.log('Run Server, Run');
